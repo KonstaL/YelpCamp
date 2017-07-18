@@ -1,29 +1,29 @@
 <% include ../partials/header %>
 
 
-
-
 <div class="container">
     <header class="jumbotron">
         <div class="container">
-            <h1>Welcome to TestCamp!</h1>
-            <p>View our hand-picked campgrounds from all over Finland!</p>
+            <h1>Tervetuloa YelpCamppiin!</h1>
+            <p>Katso meidän käsinpoimitut leirintäpaikat ympäri maailmaa!</p>
             <p>
-                 <a class="btn btn-primary btn-lg" href="campgrounds/new">Add a new campground</a>
+                 <% if(currentUser) { %>
+                 <a class="btn btn-primary btn-lg" href="campgrounds/new">Lisää leirintäpaikka</a>
+                <% } %>
             </p>
         </div>
     </header>
     
     <div class="row">
         <div class="col-lg-12 col-md-12">
-            <h3>Our most popular campgrounds</h3>
+            <h3>Suosituimmat leiripaikkamme</h3>
         </div>
     </div>
     <div class="row text-center" style="display:flex; flex-wrap: wrap;">
         <%  campgrounds.forEach(function(camp) { %>
-        <div class="col-md-3 col-sm-6">
+        <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="thumbnail">
-                    <img src="<%=camp['img']%>">
+                    <div class="img-resize" style="background-image:url(<%=camp['img']%>)"></div>
                     <div class="caption">
                         <h3>  <%= camp["name"] %> </h3>  
                     </div>

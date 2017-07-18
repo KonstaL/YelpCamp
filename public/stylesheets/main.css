@@ -1,6 +1,41 @@
+/*
+
+#42282E
+#75A48b
+#d9cf80
+#DC9b74
+#D6665A
+*/
+
+
+body {
+    background-color: #f4f4f4;
+}
 .thumbnail img {
     width: 100%;
 }
+.img-resize {
+    background-position: center;
+    background-size: cover;
+    height: 250px;
+    width: 100%;
+}
+ul {
+    padding: 0px;
+}
+
+img {
+    max-height: 70vh;
+    object-fit: cover;
+}
+@media (max-width: 768px) {
+    .img-resize {
+   
+        height: 800px;
+        width: 100%;
+    }
+}
+
 
 .thumbnail {
     padding: 0;
@@ -13,3 +48,33 @@
 .delete-form {
     display: inline;
 }
+
+.navbar-inverse {
+    background-color: #42282E;
+    border: none;
+}
+
+.navbar-header {
+     float: left;
+     padding: 15px;
+     text-align: center;
+ }
+.navbar-brand {float:none;}
+
+/* Google Maps */
+#map {
+    height: 400px;
+    width: 100%;
+}
+
+.pac-container:after {
+    /* Disclaimer: not needed to show 'powered by Google' if also a Google Map is shown */
+
+    background-image: none !important;
+    height: 0px;
+}
+
+
+ .back {
+     padding-top: 30px;
+ }

@@ -9,7 +9,8 @@ var express         = require("express"),
     passport        = require("passport"),
     LocalStrategy   = require("passport-local"),
     methodOverride  = require("method-override"),
-    flash           = require("connect-flash");
+    flash           = require("connect-flash"),
+    geocoder        = require("geocoder");
  
  
 //Requiring routes    
@@ -19,6 +20,7 @@ var commentRoutes       = require("./routes/comments"),
 
 //APP SETUP
 mongoose.connect("mongodb://test:test@ds153682.mlab.com:53682/alko_app");
+//mongoose.connect(process.env.DATABASEURL);
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
@@ -54,7 +56,8 @@ app.use("/campgrounds/:id/comments", commentRoutes);
 
 
 //Start server
-app.listen(process.env.PORT, process.env.IP, function() {
+app.listen(8080, function() {
+//app.listen(process.env.PORT, process.env.IP, function() {
     console.log("YelpCamp server has started");
     //console.log(process.env.PORT, process.env.IP);
 });

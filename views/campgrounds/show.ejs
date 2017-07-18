@@ -2,18 +2,21 @@
 <div class="container">
     <div class="row">
         <div class="col-md-3">
-        <p class="lead">YelpCamp</p>
+            <p class="lead">Tietoja</p>
             <div class="list-group">
-                <li class="list-group-item active">Info 1</li>
-                <li class="list-group-item">Info 2</li>
-                <li class="list-group-item">Info 3</li>
+                <ul>
+                    <li class="list-group-item active">Info 1</li>
+                    <li class="list-group-item">Info 2</li>
+                    <li class="list-group-item">Info 3</li>
+                </ul>
+                    <div id="map"></div>
             </div>
         </div>
         <div class="col-md-9">
             <div class="thumbnail">
                 <img class="image-responsive" src="<%= foundCamp.img %>">
                 <div class="caption-full">
-                    <h4 class="pull-right"><%=foundCamp.price%>$ a Night</h4>
+                    <h4 class="pull-right"><%=foundCamp.price%>€ a Night</h4>
                     <h4><a><%= foundCamp.name %></a></h4>
                     <p>
                             <%= foundCamp.desc %>
@@ -22,8 +25,9 @@
                         <%=console.log(foundCamp.author.username)%>
                         <em>Submitted by: <%=foundCamp.author.username%></em>
                     </p>
-                    <% console.log(foundCamp.author); %>
-                    <% if(currentUser && foundCamp.author.id.equals(currentUser._id)) {%>
+                    <p class="back"><a href="/campgrounds">Takaisin</a></p>
+
+                    <% if(currentUser && foundCamp.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin) {%>
                         <a href="/campgrounds/<%=foundCamp.id%>/edit" class="btn btn-warning">Edit</a>
                         <form class="delete-form" action="/campgrounds/<%=foundCamp.id%>?_method=DELETE" method="POST">
                             <button class="btn btn-danger">Delete</button>
@@ -42,9 +46,10 @@
                     <div class="row">
                         <div class="col-md-12">
                             <strong><%= comment.author.username %></strong>
-                            <span class="pull-right">10 days ago</span>
+
+                            <span class="pull-right"><%=comment.date.getDate()+"/"+comment.date.getMonth()+"/"+comment.date.getFullYear()%></span>
                             <p> <%= comment.text %> </p>
-                            <% if(currentUser && comment.author.id.equals(currentUser._id)) {%>
+                            <% if(currentUser && comment.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin) {%>
                                 <a class="btn btn-xs btn-warning"
                                    href="/campgrounds/<%=foundCamp.id%>/comments/<%=comment._id%>/edit">
                                     edit
@@ -59,12 +64,35 @@
             </div>
         </div>
     </div>
-
-
-
-
-
-
 </div>
+
+<script>
+    function initMap() {
+        var lat = <%= foundCamp.lat %>;
+        var lng = <%= foundCamp.lng %>;
+        var center = {lat: lat, lng: lng };
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 8,
+            center: center,
+            scrollwheel: false
+        });
+        var contentString = `
+      <strong><%= foundCamp.name %><br />
+      <%= foundCamp.location %></strong>
+      <p><%= foundCamp.description %></p>
+    `
+        var infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+        var marker = new google.maps.Marker({
+            position: center,
+            map: map
+        });
+        marker.addListener('click', function() {
+            infowindow.open(map, marker);
+        });
+    }
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBnoF9CCLNheWlUxlKF-g12cgoOxpFy3oo&callback=initMap"></script>
 
 <% include ../partials/footer %>
