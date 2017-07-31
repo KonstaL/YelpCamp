@@ -1,5 +1,4 @@
 var express         = require("express"),
-var express         = require("express"),
     app             = express(),
     bodyParser      = require("body-parser"),
     mongoose        = require("mongoose"),
@@ -57,8 +56,10 @@ app.use("/campgrounds/:id/comments", commentRoutes);
 
 
 
-console.log(process.env.PORT, process.env.IP, process.env.DATABASEURL);
+
 //Start server
+
+//app.listen(8080, function() { //for local development
 app.listen(process.env.PORT, process.env.IP, function() {
     console.log("YelpCamp server has started");
     //console.log(process.env.PORT, process.env.IP);
