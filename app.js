@@ -1,4 +1,5 @@
 var express         = require("express"),
+var express         = require("express"),
     app             = express(),
     bodyParser      = require("body-parser"),
     mongoose        = require("mongoose"),
@@ -11,16 +12,17 @@ var express         = require("express"),
     methodOverride  = require("method-override"),
     flash           = require("connect-flash"),
     geocoder        = require("geocoder");
- 
- 
+
+
+
+
 //Requiring routes    
 var commentRoutes       = require("./routes/comments"),
     campgroundRoutes    = require("./routes/campgrounds"),
     indexRoutes         = require("./routes/index");
 
 //APP SETUP
-mongoose.connect("mongodb://test:test@ds153682.mlab.com:53682/alko_app");
-//mongoose.connect(process.env.DATABASEURL);
+mongoose.connect(process.env.DATABASEURL);
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
@@ -55,8 +57,8 @@ app.use("/campgrounds/:id/comments", commentRoutes);
 
 
 
+console.log(process.env.PORT, process.env.IP, process.env.DATABASEURL);
 //Start server
-//app.listen(8080, function() {
 app.listen(process.env.PORT, process.env.IP, function() {
     console.log("YelpCamp server has started");
     //console.log(process.env.PORT, process.env.IP);
