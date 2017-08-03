@@ -6,14 +6,52 @@ var express         = require("express"),
 
 //INDEX campground route
 router.get("/", function(req, res) {
-    //Get all campgrounds from DB
-    Campground.find({}, function(err, campgrounds) {
-        if (err) {
-            console.log(err);
-        } else {
-             res.render("campgrounds/index", { campgrounds: campgrounds, currentUser: req.user});
-        }
-    });
+    if(typeof(req.query.search) !== "undefined") {
+        var regex = new RegExp(escapeRegExp(req.query.search), "gi");
+        Campground.find({name: regex}, function(err, campgrounds) {
+            if (err) {
+                console.log(err);
+            } else {
+                if(campgrounds.length === 0) {
+                    var searchMessage = "Antamallasi hakusanalla ei löytynyt tuloksia";
+                }
+                else {
+                    var searchMessage = 'Leirintäpaikat haulla "' + req.query.search + '"';
+                }
+                res.render("partials/listCampgrounds",
+                    {
+                        campgrounds: campgrounds,
+                        searchMessage : searchMessage
+                    });
+            }
+        });
+ }  else if(req.xhr) {
+        var perPage = 4,
+            page    = Math.max(0, req.query.page)
+        Campground.find({}).limit(perPage).skip(perPage * page).exec(function(err, campgrounds) {
+        //Get all campgrounds from DB
+        /*Campground.find({}).skip(4).exec(function(err, campgrounds) {*/
+            if (err) {
+                console.log(err);
+            } else if(campgrounds.length < 4) {
+                res.render("partials/listCampgrounds", { campgrounds: campgrounds});
+            } else {
+                res.render("partials/listCampgrounds", { campgrounds: campgrounds});
+            }
+        });
+    } else {
+        //Get 4 campgrounds from the DB
+
+        /*Disabling for temporary deployment*/
+        /*Campground.find({}).limit(4).exec(function(err, campgrounds) {*/
+        Campground.find({}, function(err, campgrounds) {
+            if (err) {
+                console.log(err);
+            } else {
+                 res.render("campgrounds/index", { campgrounds: campgrounds, currentUser: req.user});
+            }
+        });
+    }
 });
 
 //Create campground route
@@ -21,7 +59,7 @@ router.post("/", middleware.isLoggedIn, function(req, res) {
     var name = req.body.newCamp;
     var img = req.body.newImg;
     var desc = req.body.newDesc;
-    var price = req.body.newPrice
+    var price = req.body.newPrice;
     var author = {
         id: req.user._id,
         username: req.user.username
@@ -111,6 +149,11 @@ router.delete("/:id", middleware.checkCampgroundOwner, function(req, res) {
         }
     });
 });
+
+//For preventing workload on the server
+function escapeRegExp(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+}
 
 
 

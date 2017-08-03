@@ -15,7 +15,7 @@ router.post("/", middleware.isLoggedIn, function(req, res) {
                 if(err) {
                    console.log(err);
                 } else {
-                    comment.author.username = req.user.username
+                    comment.author.username = req.user.username;
                     comment.author.id = req.user._id;
 
                     

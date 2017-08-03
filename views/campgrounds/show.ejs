@@ -16,28 +16,28 @@
             <div class="thumbnail">
                 <img class="image-responsive" src="<%= foundCamp.img %>">
                 <div class="caption-full">
-                    <h4 class="pull-right"><%=foundCamp.price%>€ a Night</h4>
+                    <h4 class="pull-right"><%=foundCamp.price%>€ per yö</h4>
                     <h4><a><%= foundCamp.name %></a></h4>
                     <p>
                             <%= foundCamp.desc %>
                     </p>
                     <p>
-                        <%=console.log(foundCamp.author.username)%>
-                        <em>Submitted by: <%=foundCamp.author.username%></em>
+                    
+                        <em>Julkaisija: <%=foundCamp.author.username%></em>
                     </p>
                     <p class="back"><a href="/campgrounds">Takaisin</a></p>
 
                     <% if(currentUser && foundCamp.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin) {%>
-                        <a href="/campgrounds/<%=foundCamp.id%>/edit" class="btn btn-warning">Edit</a>
+                        <a href="/campgrounds/<%=foundCamp.id%>/edit" class="btn btn-warning">Muokkaa</a>
                         <form class="delete-form" action="/campgrounds/<%=foundCamp.id%>?_method=DELETE" method="POST">
-                            <button class="btn btn-danger">Delete</button>
+                            <button class="btn btn-danger">Poista</button>
                         </form>
                     <%    }    %>
                 </div>
             </div>
             <div class="well">
                 <div class="text-right">
-                    <a class ="btn btn-success" href="/campgrounds/<%= foundCamp._id %>/comments/new">Add New Comment</a>
+                    <a class ="btn btn-success" href="/campgrounds/<%= foundCamp._id %>/comments/new">Lisää kommentti</a>
                 </div>
                 <hr>
                 
@@ -80,7 +80,7 @@
       <strong><%= foundCamp.name %><br />
       <%= foundCamp.location %></strong>
       <p><%= foundCamp.description %></p>
-    `
+    `;
         var infowindow = new google.maps.InfoWindow({
             content: contentString
         });
