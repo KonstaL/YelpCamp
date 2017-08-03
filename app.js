@@ -59,8 +59,8 @@ app.use("/campgrounds/:id/comments", commentRoutes);
 
 //Start server
 
-app.listen(8080, function() { //for local development
-//app.listen(process.env.PORT, process.env.IP, function() {
+//app.listen(8080, function() { //for local development
+app.listen(process.env.PORT, process.env.IP, function() {
     console.log("YelpCamp server has started");
     //console.log(process.env.PORT, process.env.IP);
 });
