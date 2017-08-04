@@ -74,12 +74,15 @@ img {
     height: 0px;
 }
 
+.back {
+    padding-top: 30px;
+}
 
- .back {
-     padding-top: 30px;
- }
+.flexwrap {
+    display:flex;
+    flex-wrap: wrap;
+}
 
- .flexwrap {
-     display:flex;
-     flex-wrap: wrap;
+ #getMoreButton {
+     margin-bottom: 30px;
  }
