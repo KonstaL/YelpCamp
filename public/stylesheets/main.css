@@ -78,3 +78,8 @@ img {
  .back {
      padding-top: 30px;
  }
+
+ .flexwrap {
+     display:flex;
+     flex-wrap: wrap;
+ }

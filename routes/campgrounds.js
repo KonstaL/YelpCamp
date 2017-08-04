@@ -6,47 +6,53 @@ var express         = require("express"),
 
 //INDEX campground route
 router.get("/", function(req, res) {
-    if(typeof(req.query.search) !== "undefined") {
-        var regex = new RegExp(escapeRegExp(req.query.search), "gi");
-        Campground.find({name: regex}, function(err, campgrounds) {
+    //perPage Defines how much is shown per load or "page"
+    //page defines how much has been loaded already for the .skip() query
+    var perPage = 2,
+        page    = req.query.page;
+
+    //Checks whether the request is a AJAX request
+    if(req.xhr)  {
+        //Sanitazes input
+        const regex = new RegExp(escapeRegExp(req.query.search), "gi");
+        Campground.find({name: regex}).limit(perPage).skip(perPage * page).exec(function(err, campgrounds) {
             if (err) {
                 console.log(err);
+                req.flash("error", "Something went wrong with the server, please contact admin");
+                res.redirect("back");
             } else {
                 if(campgrounds.length === 0) {
                     var searchMessage = "Antamallasi hakusanalla ei löytynyt tuloksia";
-                }
-                else {
+                } else if (req.query.search === "") {
+                    var searchMessage = "Suosituimmat leiripaikkamme";
+                } else {
                     var searchMessage = 'Leirintäpaikat haulla "' + req.query.search + '"';
+                    }
                 }
-                res.render("partials/listCampgrounds",
-                    {
-                        campgrounds: campgrounds,
-                        searchMessage : searchMessage
-                    });
-            }
-        });
- }  else if(req.xhr) {
-        var perPage = 4,
-            page    = Math.max(0, req.query.page)
-        Campground.find({}).limit(perPage).skip(perPage * page).exec(function(err, campgrounds) {
-        //Get all campgrounds from DB
-        /*Campground.find({}).skip(4).exec(function(err, campgrounds) {*/
-            if (err) {
-                console.log(err);
-            } else if(campgrounds.length < 4) {
-                res.render("partials/listCampgrounds", { campgrounds: campgrounds});
-            } else {
-                res.render("partials/listCampgrounds", { campgrounds: campgrounds});
-            }
+                //allLoaded defines whether data is injected in the upcoming render
+                (campgrounds.length < perPage) ? allLoaded = true : allLoaded = false;
+                if(page > 0) {
+                    res.render("partials/loadMore",
+                        {
+                            campgrounds: campgrounds,
+                            allLoaded: allLoaded,
+                            searchMessage: searchMessage
+                        });
+                } else {
+                    res.render("partials/fuzzySearch",
+                        {
+                            campgrounds: campgrounds,
+                            allLoaded: allLoaded,
+                            searchMessage: searchMessage
+                        });
+                }
         });
     } else {
-        //Get 4 campgrounds from the DB
-
-        /*Disabling for temporary deployment*/
-        /*Campground.find({}).limit(4).exec(function(err, campgrounds) {*/
-        Campground.find({}, function(err, campgrounds) {
+        Campground.find({}).limit(perPage).exec(function(err, campgrounds) {
             if (err) {
                 console.log(err);
+                req.flash("error", "Something went wrong with the server, please contact admin");
+                res.redirect("back");
             } else {
                  res.render("campgrounds/index", { campgrounds: campgrounds, currentUser: req.user});
             }

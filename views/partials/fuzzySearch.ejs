@@ -1,0 +1,36 @@
+<!-- This is used for AJAX searching and loading -->
+
+
+<div id="row-campgrounds">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <% if(typeof(searchMessage) !== "undefined") { %>
+            <h3 class="text-center"><%= searchMessage %></h3>
+            <% } else { %>
+            <h3>Suosituimmat leiripaikkamme</h3>
+            <% } %>
+        </div>
+    </div>
+    <div  class="row text-center flexwrap">
+
+        <% campgrounds.forEach(function(camp) { %>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="thumbnail">
+                <div class="img-resize" style="background-image:url(<%= camp['img'] %>)"></div>
+                <div class="caption">
+                    <h3>  <%= camp["name"] %> </h3>
+                </div>
+                <p>
+                    <a href="/campgrounds/<%= camp._id %>" class="btn btn-primary">Lisää</a>
+                </p>
+            </div>
+        </div>
+        <% }); %>
+    </div>
+</div>
+<!-- For passing data to hide load more button-->
+<% if(allLoaded) { %>
+    <span id="buttonHide" data-hide="true"></span>
+<%}%>
+
+</div>

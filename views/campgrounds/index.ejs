@@ -1,64 +1,62 @@
 <% include ../partials/header %>
 
-
 <div class="container">
+
     <header class="jumbotron">
         <div class="container">
             <h1>Tervetuloa YelpCamppiin!</h1>
             <p>Katso meidän käsinpoimitut leirintäpaikat ympäri maailmaa!</p>
             <p>
                 <% if(currentUser) { %>
-                <a class="btn btn-primary btn-lg" href="campgrounds/new">Lisää leirintäpaikka</a>
+                    <a class="btn btn-primary btn-lg" href="campgrounds/new">Lisää leirintäpaikka</a>
                 <% } %>
             </p>
-            <p>
-                <div class="form-group form-inline">
-                    <input id="searchInput" type="text" class="form-control" name="search"
-                           placeholder="Hae leirintäalueita..">
-                </div>
-            </p>
+            <div class="form-group form-inline">
+                <input id="searchInput" type="text" class="form-control" name="search" placeholder="Hae leirintäalueita..">
+            </div>
         </div>
     </header>
 
+    <div id="row-campgrounds-info">
 
-
-    <div id="row-campgrounds">
         <div class="row">
             <div class="col-lg-12 col-md-12">
                 <% if(typeof(foundCampgrounds) !== "undefined") { %>
                 <h3 class="text-center"><%= searchMessage %></h3>
                 <% } else { %>
-                <h3>Suosituimmat leiripaikkamme</h3>
+                <h3 class="text-center">Suosituimmat leiripaikkamme</h3>
                 <% } %>
             </div>
         </div>
-    <div  class="row text-center" style="display:flex; flex-wrap: wrap;">
 
-        <!--Makes the initially shown campgrounds-->
-        <% campgrounds.forEach(function(camp) { %>
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="thumbnail">
-                <div class="img-resize" style="background-image:url(<%= camp['img'] %>)"></div>
-                <div class="caption">
-                    <h3>  <%= camp["name"] %> </h3>
+        <div id="row-campgrounds">
+            <div class="row text-center flexwrap">
+                <!--Makes the initially shown campgrounds-->
+
+                <% campgrounds.forEach(function(camp) { %>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="thumbnail">
+                        <div class="img-resize" style="background-image:url(<%= camp['img'] %>)"></div>
+                        <div class="caption">
+                            <h3>  <%= camp["name"] %> </h3>
+                        </div>
+                        <p>
+                            <a href="/campgrounds/<%= camp._id %>" class="btn btn-primary">Lisää</a>
+                        </p>
+                    </div>
                 </div>
-                <p>
-                    <a href="/campgrounds/<%= camp._id %>" class="btn btn-primary">Lisää</a>
-                </p>
+                <% }); %>
+
             </div>
         </div>
+    </div>
 
-        <% }); %>
-    </div>
-    </div>
-    <!--Hiding for temporary deployment-->
-<!--    <div class="row">
+    <div class="row">
         <div class="col-md-2 col-md-offset-5 text-center">
-            &lt;!&ndash;Gets more more campgrounds from the database&ndash;&gt;
             <a id="getMoreButton" class="btn btn-success">Hae lisää</a>
         </div>
-    </div>-->
-</div>
+    </div>
 
+</div>
 
 <% include ../partials/footer %>
