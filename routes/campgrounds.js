@@ -8,7 +8,7 @@ var express         = require("express"),
 router.get("/", function(req, res) {
     //perPage Defines how much is shown per load or "page"
     //page defines how much has been loaded already for the .skip() query
-    var perPage = 2,
+    var perPage = 4,
         page    = req.query.page;
 
     //Checks whether the request is a AJAX request
